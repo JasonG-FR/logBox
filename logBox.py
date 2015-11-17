@@ -51,14 +51,14 @@ def sauvegarderIP(ip):
 
 def lireSauvegardeIP(debug):
     try:
-	    fichier = open("ip","r")
-	    ip = fichier.readline()
+        fichier = open("ip","r")
+        ip = fichier.readline()
         fichier.close()
     except IOError:
         ip = "vide"
-     if debug:
-            print ip
-     return ip
+    if debug:
+        print ip
+    return ip
 
 if debug:
     print "Début pause..."
