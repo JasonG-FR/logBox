@@ -48,20 +48,30 @@ def sauvegarderIP(ip):
     fichier.write(ip)
     fichier.close()
 
+def lireSauvegardeIP(debug):
+    try:
+	    fichier = open("ip","r")
+	    ip = fichier.readline()
+        fichier.close()
+    except IOError:
+        ip = "vide"
+     if debug:
+            print ip
+     return ip
+
 if debug:
     print "Début pause..."
 os.system("sleep 60")   #On attend que tout soit initialisé avant de commencer (lan,openvpn,webdav)
 if debug:
     print "Fin pause..."
 
-ip_ref  = "vide"
+ip_ref  = lireSauvegardeIP(debug)        #Permet de charger la dernière IP téléchargée sur le webdav
 while True:
     ip_lue = lireIP(interface,debug)
     if debug:
         print "ip_lue != ip_ref : " + str(ip_lue != ip_ref)
     if ip_lue != ip_ref:
-        #Mise à jour de l'adresse sur le webdav
-        ecrireIP(ip_lue,debug)
-        sauvegarderIP(ip_lue)
+        ecrireIP(ip_lue,debug)      #Mise à jour de l'adresse sur le webdav uniquement si l'IP a changée au reboot ou à cause du bail
+        sauvegarderIP(ip_lue)      #Mise à jour du fichier de sauvegarde local pour pouvoir connaître l'ip d'avant un reboot non planifié
         ip_ref = ip_lue
     os.system("sleep " + str(tps_actu))
