@@ -49,4 +49,12 @@ if debug:
 os.system("sleep 60")   #On attend que tout soit initialisé avant de commencer (lan,openvpn,webdav)
 if debug:
     print "Fin pause..."
-ecrireIP(lireIP(debug),debug)
+
+ip_ref  = "vide"
+while True:
+    ip_lue = lireIP(debug)
+        if ip_lue != ip_ref:
+        #Mise à jour de l'adresse sur le webdav
+        ecrireIP(ip_lue,debug)
+        ip_ref = ip_lue
+    os.system("sleep " + str(tps_actu))
