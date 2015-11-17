@@ -1,27 +1,24 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 # -*- coding: utf-8 -*-
 #
 # Script de récupération, encryption et publication webdav d'une IP VPN pour accès extérieur
 
 import os
+import socket
+import fcntl
+import struct
 
-debug = False
-tps_actu = 60       #temps à attendre entre deux vérifications
-cheminWebdav = "/home/pi/Box/VPN_IP"
+debug = True
+tps_actu = 60                                                                                                #temps à attendre entre deux vérifications
+cheminWebdav = "/home/jason/Desktop/WebDav_Test"          #Rpi /home/pi/Box/VPN_IP
+interface = "wlp3s0"                                                                                #Rpi tun0
 
-def lireIP(debug):
-    ip = os.popen("/sbin/ifconfig tun0 | grep inet\ adr")     
-    #Retourne une chaine : inet adr:xxx.xxx.xxx.xxx  P-t-P:xxx.xxx.xxx.xxx  Masque:xxx.xxx.xxx.xxx
-    chaine = ip.read()
+def lireIP(interface, debug):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    ip = socket.inet_ntoa(fcntl.ioctl(s.fileno(),0x8915,struct.pack('256s', interface[:15]))[20:24])
     if debug:
-        print "chaine =",chaine    
-    ligneTun = chaine.split("  ")[5]    #On garde que : inet adr:xxx.xxx.xxx.xxx
-    if debug:
-        print "ligneTun =",ligneTun
-    ipTun = ligneTun.split(":")[1]      #On garde que : xxx.xxx.xxx.xxx
-    if debug:
-        print "ipTun =",ipTun
-    return ipTun
+        print ip
+    return ip
     
 def ecrireIP(IP,debug):
     date_cmd = os.popen("date +%d%m%Y_%H%M%S")
@@ -54,8 +51,10 @@ if debug:
 
 ip_ref  = "vide"
 while True:
-    ip_lue = lireIP(debug)
-        if ip_lue != ip_ref:
+    ip_lue = lireIP(interface,debug)
+    if debug:
+        print "ip_lue != ip_ref : " + str(ip_lue != ip_ref)
+    if ip_lue != ip_ref:
         #Mise à jour de l'adresse sur le webdav
         ecrireIP(ip_lue,debug)
         ip_ref = ip_lue
