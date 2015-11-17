@@ -1,0 +1,5 @@
+debug:True
+interface:wlp3s0
+destinataireGPG:opo
+cheminWebdav:/home/jason/Desktop/WebDav_Test
+tps_actu:5
