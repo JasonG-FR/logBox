@@ -9,7 +9,7 @@ import fcntl
 import struct
 
 debug = True
-tps_actu = 60                                                                                                #temps à attendre entre deux vérifications
+tps_actu = 60                                                                                              #temps à attendre entre deux vérifications
 cheminWebdav = "/home/jason/Desktop/WebDav_Test"          #Rpi /home/pi/Box/VPN_IP
 interface = "wlp3s0"                                                                                #Rpi tun0
 
