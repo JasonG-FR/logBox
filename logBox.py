@@ -15,17 +15,17 @@ def genDefauts():
                          "interface":"tun0",
                          "destinataireGPG":"opo"}
                          
-    config = open("config","w")
+    config = open("/home/pi/logBox/config","w")
     for key in params:
         config.write(str(key)+":"+str(params[key])+"\n")
     config.close()
     
 def lireParametres():
     try:
-        config = open("config","r")
+        config = open("/home/pi/logBox/config","r")
     except IOError:
         genDefauts()
-        config = open("config","r")
+        config = open("/home/pi/logBox/config","r")
     params = formaterParams(config)
     config.close()
     return params
@@ -72,13 +72,13 @@ def ecrireIP(IP,destinataireGPG,cheminWebdav,debug):
     os.system("mv " + nom + ".gpg " + cheminWebdav)   #On place le fichier chiffré dans le webdav
 
 def sauvegarderIP(ip):
-    fichier = open("ip","w")
+    fichier = open("/home/pi/logBox/ip","w")
     fichier.write(ip)
     fichier.close()
 
 def lireSauvegardeIP(debug):
     try:
-        fichier = open("ip","r")
+        fichier = open("/home/pi/logBox/ip","r")
         ip = fichier.readline()
         fichier.close()
     except IOError:
@@ -90,7 +90,7 @@ def lireSauvegardeIP(debug):
 
 
 parametres = lireParametres()
-ip_ref  = lireSauvegardeIP(parametres["debug"])        #Permet de charger la dernière IP téléchargée sur le webdav
+ip_ref = lireSauvegardeIP(parametres["debug"])        #Permet de charger la dernière IP téléchargée sur le webdav
 
 if parametres["debug"]:
     print "Début pause..."
