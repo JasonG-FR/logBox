@@ -9,9 +9,10 @@ import fcntl
 import struct
 
 debug = True
-tps_actu = 60                                                                                              #temps à attendre entre deux vérifications
+tps_actu = 5                                                                                             #temps à attendre entre deux vérifications
 cheminWebdav = "/home/jason/Desktop/WebDav_Test"          #Rpi /home/pi/Box/VPN_IP
 interface = "wlp3s0"                                                                                #Rpi tun0
+destinataireGPG = "opo"                                                                        #Rpi opo
 
 def lireIP(interface, debug):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -20,7 +21,7 @@ def lireIP(interface, debug):
         print ip
     return ip
     
-def ecrireIP(IP,debug):
+def ecrireIP(IP,destinataireGPG,debug):
     date_cmd = os.popen("date +%d%m%Y_%H%M%S")
     #Retourne une chaine : 11112015_235551
     date = date_cmd.read().replace("\n","")
@@ -32,8 +33,8 @@ def ecrireIP(IP,debug):
     os.system("echo '" + IP + "' > " + nom)     #On écrit un fichier contenant l'IP (echo IP > fichier)
     
     if debug:
-        print "gpg -r opo --encrypt-files " + nom
-    os.system("gpg -r opo --encrypt-files " + nom)  #On chiffre avec gpg le fichier
+        print "gpg -r " + destinataireGPG + " --encrypt-files " + nom
+    os.system("gpg -r " + destinataireGPG + " --encrypt-files " + nom)  #On chiffre avec gpg le fichier
 
     if debug:
         print "rm " + nom
@@ -71,7 +72,7 @@ while True:
     if debug:
         print "ip_lue != ip_ref : " + str(ip_lue != ip_ref)
     if ip_lue != ip_ref:
-        ecrireIP(ip_lue,debug)      #Mise à jour de l'adresse sur le webdav uniquement si l'IP a changée au reboot ou à cause du bail
+        ecrireIP(ip_lue,destinataireGPG,debug)      #Mise à jour de l'adresse sur le webdav uniquement si l'IP a changée au reboot ou à cause du bail
         sauvegarderIP(ip_lue)      #Mise à jour du fichier de sauvegarde local pour pouvoir connaître l'ip d'avant un reboot non planifié
         ip_ref = ip_lue
     os.system("sleep " + str(tps_actu))
