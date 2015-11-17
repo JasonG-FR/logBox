@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Script de récupération, encryption et publication webdav d'une IP VPN pour accès extérieur
-# Jason GOMBERT, 12/11/2015 02:20:05  (V1.4)
 
 import os
 
@@ -10,14 +9,14 @@ debug = False
 
 def lireIP(debug):
     ip = os.popen("/sbin/ifconfig tun0 | grep inet\ adr")     
-    #Retourne une chaine : inet adr:10.99.4.208  P-t-P:10.99.4.208  Masque:255.255.255.0
+    #Retourne une chaine : inet adr:xxx.xxx.xxx.xxx  P-t-P:xxx.xxx.xxx.xxx  Masque:xxx.xxx.xxx.xxx
     chaine = ip.read()
     if debug:
         print "chaine =",chaine    
-    ligneTun = chaine.split("  ")[5]    #On garde que : inet adr:10.99.4.208
+    ligneTun = chaine.split("  ")[5]    #On garde que : inet adr:xxx.xxx.xxx.xxx
     if debug:
         print "ligneTun =",ligneTun
-    ipTun = ligneTun.split(":")[1]      #On garde que : 10.99.4.208
+    ipTun = ligneTun.split(":")[1]      #On garde que : xxx.xxx.xxx.xxx
     if debug:
         print "ipTun =",ipTun
     return ipTun
