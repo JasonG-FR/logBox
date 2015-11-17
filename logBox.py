@@ -6,6 +6,8 @@
 import os
 
 debug = False
+tps_actu = 60       #temps à attendre entre deux vérifications
+cheminWebdav = "/home/pi/Box/VPN_IP"
 
 def lireIP(debug):
     ip = os.popen("/sbin/ifconfig tun0 | grep inet\ adr")     
@@ -41,8 +43,8 @@ def ecrireIP(IP,debug):
     os.system("rm " + nom)  #On supprime le fichier temporaire
     
     if debug:
-        print "mv " + nom + ".gpg /home/pi/Box/VPN_IP"
-    os.system("mv " + nom + ".gpg /home/pi/Box/VPN_IP")   #On place le fichier chiffré dans le webdav
+        print "mv " + nom + ".gpg " + cheminWebdav
+    os.system("mv " + nom + ".gpg " + cheminWebdav)   #On place le fichier chiffré dans le webdav
 
 if debug:
     print "Début pause..."
