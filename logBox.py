@@ -43,6 +43,11 @@ def ecrireIP(IP,debug):
         print "mv " + nom + ".gpg " + cheminWebdav
     os.system("mv " + nom + ".gpg " + cheminWebdav)   #On place le fichier chiffré dans le webdav
 
+def sauvegarderIP(ip):
+    fichier = open("ip","w")
+    fichier.write(ip)
+    fichier.close()
+
 if debug:
     print "Début pause..."
 os.system("sleep 60")   #On attend que tout soit initialisé avant de commencer (lan,openvpn,webdav)
@@ -57,5 +62,6 @@ while True:
     if ip_lue != ip_ref:
         #Mise à jour de l'adresse sur le webdav
         ecrireIP(ip_lue,debug)
+        sauvegarderIP(ip_lue)
         ip_ref = ip_lue
     os.system("sleep " + str(tps_actu))
