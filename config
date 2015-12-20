@@ -1,5 +1,5 @@
-debug:True
-interface:wlp3s0
+debug:0
+interface:tun0
 destinataireGPG:opo
-cheminWebdav:/home/jason/Desktop/WebDav_Test
-tps_actu:5
+cheminWebdav:/home/serur/Box/VPN_IP
+tps_actu:300

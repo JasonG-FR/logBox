@@ -9,23 +9,23 @@ import fcntl
 import struct
 
 def genDefauts():
-    params = {"debug":False,
+    params = {"debug":0,
                          "tps_actu":"300",
-                         "cheminWebdav":"/home/pi/Box/VPN_IP",
+                         "cheminWebdav":"/home/serur/Box/VPN_IP",
                          "interface":"tun0",
                          "destinataireGPG":"opo"}
                          
-    config = open("/home/pi/logBox/config","w")
+    config = open("/home/serur/logBox/config","w")
     for key in params:
         config.write(str(key)+":"+str(params[key])+"\n")
     config.close()
     
 def lireParametres():
     try:
-        config = open("/home/pi/logBox/config","r")
+        config = open("/home/serur/logBox/config","r")
     except IOError:
         genDefauts()
-        config = open("/home/pi/logBox/config","r")
+        config = open("/home/serur/logBox/config","r")
     params = formaterParams(config)
     config.close()
     return params
@@ -36,7 +36,7 @@ def formaterParams(fichier):
             key = line.split(":")[0]
             item = line.split(":")[1]
             if key == "debug":
-                params[key] = bool(item)
+                params[key] = bool(int(item))
             else:
                 params[key] = item.replace("\n","")
     return params
@@ -72,13 +72,13 @@ def ecrireIP(IP,destinataireGPG,cheminWebdav,debug):
     os.system("mv " + nom + ".gpg " + cheminWebdav)   #On place le fichier chiffré dans le webdav
 
 def sauvegarderIP(ip):
-    fichier = open("/home/pi/logBox/ip","w")
+    fichier = open("/home/serur/logBox/ip","w")
     fichier.write(ip)
     fichier.close()
 
 def lireSauvegardeIP(debug):
     try:
-        fichier = open("/home/pi/logBox/ip","r")
+        fichier = open("/home/serur/logBox/ip","r")
         ip = fichier.readline()
         fichier.close()
     except IOError:
